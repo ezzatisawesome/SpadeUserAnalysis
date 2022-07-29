@@ -1,39 +1,7 @@
 # Load packages
-pacman::p_load(pacman, mongolite)
+pacman::p_load(pacman, jsonlite)
 
-users <- mongo(db='local', collection='users', url='mongodb://localhost:27017')
-userData <- users$find('{}')
-
-writingData <- userData$writing
-textData <- userData$text
-highlightData <- userData$highlight
-penData <- userData$pen
-drawData <- userData$draw
-rectangleData <- userData$rectangle
-triangleData <- userData$triangle
-ellipseData <- userData$ellipse
-
-pdfData <- lengths(userData$pdf)
-downloadData <- userData$download
-shareData <- userData$share
-
-summary(writingData)
-summary(textData)
-summary(highlightData)
-summary(penData)
-summary(drawData)
-summary(rectangleData)
-summary(triangleData)
-summary(ellipseData)
-
-summary(pdfData)
-summary(downloadData)
-summary(shareData)
-
-
-sketches <- mongo(db='local', collection='sketches', url='mongodb://localhost:27017')
-sketchesData <- lengths(sketches$find('{}'))
-summary(sketchesData)
-
-
-
+# Main
+data <- read_json(path = '~/Documents/SpadeUserAnalysis/classificationData.json', simplifyVector = TRUE)
+cleanData <- data[!(data$domain$domain_url=="https://spade.tools/tutorial" | data$domain$domain_url=="https://spade.tools/"),]
+categoryData <- cleanData$domain$categories
